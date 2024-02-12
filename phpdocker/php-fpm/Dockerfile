@@ -24,7 +24,8 @@ RUN apt-get update \
 RUN apt-get update && apt-get install -y supervisor
 
 
-
+RUN pwd
+RUN ls -l
 
 COPY supervisord/* /etc/supervisor/
 
