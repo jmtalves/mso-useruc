@@ -26,6 +26,6 @@ RUN apt-get update && apt-get install -y supervisor
 
 COPY ./ /var/www/html
 
-COPY supervisord /etc/supervisor
+COPY phpdocker/php-fpm/supervisord/* /etc/supervisor/
 
 CMD ["supervisord", "-c", "/etc/supervisor/supervisord.conf"]
