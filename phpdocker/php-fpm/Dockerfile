@@ -29,4 +29,6 @@ COPY supervisord/* /etc/supervisor/
 
 COPY ./ /var/www/html
 
-CMD ["supervisord", "-c", "/etc/supervisor/supervisord.conf"]
+CMD ["supervisord", "-c", "/etc/supervisor/supervisord.conf", "-n"]  &
+
+#CMD ["php", "consumers/users/userCreate.php"] &
