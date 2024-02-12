@@ -35,22 +35,22 @@ jobs:
 
       - name: Tag and Push Memcached image
         run: |
-          docker tag memcached:alpine jmtalves/mso-user:memcached
-          docker push jmtalves/mso-user:memcached
+          docker tag memcached:alpine jmtalves/mso-useruc:memcached
+          docker push jmtalves/mso-useruc:memcached
         working-directory: ./
 
       - name: Tag and Push Nginx image
         run: |
-          docker tag nginx:alpine jmtalves/mso-user:nginx
-          docker build  -f ./phpdocker/nginx/Dockerfile -t jmtalves/mso-user:nginx .
-          docker push jmtalves/mso-user:nginx
+          docker tag nginx:alpine jmtalves/mso-useruc:nginx
+          docker build  -f ./phpdocker/nginx/Dockerfile -t jmtalves/mso-useruc:nginx .
+          docker push jmtalves/mso-useruc:nginx
         working-directory: ./
 
 
       - name: Tag and Push PHP-FPM image
         working-directory: ./
         run: |
-          docker tag mso-users_php-fpm:latest jmtalves/mso-user:php-fpm
-          docker build  -f ./phpdocker/php-fpm/Dockerfile -t jmtalves/mso-user:php-fpm . 
-          docker push jmtalves/mso-user:php-fpm
+          docker tag mso-useruc_php-fpm:latest jmtalves/mso-useruc:php-fpm
+          docker build  -f ./phpdocker/php-fpm/Dockerfile -t jmtalves/mso-useruc:php-fpm . 
+          docker push jmtalves/mso-useruc:php-fpm
         
