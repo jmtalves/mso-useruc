@@ -16,7 +16,7 @@ class UserucController
      * @return void
      */
     public function index()
-    { //print_r(\Libraries\Encrypt::encryptJwt("asdasd-1-0"));die();
+    {
         $user = Request::verifyToken([0, 1]);
         $filter = [];
         if ($user[0]->type == 1) { //if no admin only see uc in which you are registered
