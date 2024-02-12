@@ -17,17 +17,6 @@ services:
     php-fpm:
         build: phpdocker/php-fpm
         working_dir: /var/www/html
-        environment:
-            - DB_HOST=172.233.34.100
-            - DB_USER=root
-            - DB_PASS=root
-            - DB_NAME=user_ucs
-            - PHP_MEMCACHED_HOST=alves-memcached-1
-            - PHP_MEMCACHED_PORT=11211
-            - URL_LOAD_BALANCE=172.232.137.219
-            - HOST_MESSAGEBROKER=172.233.35.85
-            - USER_MESSAGEBROKER=guest
-            - PASS_MESSAGEBROKER=guest
         volumes:
             - './:/var/www/html'
             - './phpdocker/php-fpm/php-ini-overrides.ini:/etc/php/8.2/fpm/conf.d/99-overrides.ini'
