@@ -32,7 +32,7 @@ class UserucController
     }
 
     /**
-     * insert
+     * insert data
      *
      * @return void
      */
@@ -44,7 +44,7 @@ class UserucController
             Response::sendResponse(422, ["msg" => "Parameters not found"]);
         }
         $userUcInfo = $this->save($post);
-        //As there won't be an actual payment, 
+        //As there won't be an actual payment,
         //let's leave the possibility to refuse payment and thereby test the SAGA pattern.
         $simulate_fail = isset($post['fail']) ? $post['fail'] : 0;
         MessageBroker::sendMessage(
