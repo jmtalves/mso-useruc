@@ -18,16 +18,13 @@ RUN apt-get update \
         php8.2-soap \ 
         php8.2-xdebug \ 
         php8.2-yaml \
+        supervisor \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* /usr/share/doc/*
 
-RUN apt-get update && apt-get install -y supervisor
-
-
+COPY ./ /var/www/html
 
 COPY supervisord/* /etc/supervisor/
-
-COPY ./ /var/www/html
 
 CMD ["supervisord", "-c", "/etc/supervisor/supervisord.conf"]
 
