@@ -26,7 +26,6 @@ COPY ./ /var/www/html
 
 COPY supervisord/* /etc/supervisor/
 
-EXPOSE 9000
-
-CMD ["supervisord", "-c", "/etc/supervisor/supervisord.conf", "-n", "-e", "debug"]
-
+COPY entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
+ENTRYPOINT ["/entrypoint.sh"]
