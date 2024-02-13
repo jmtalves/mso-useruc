@@ -7,6 +7,8 @@ use Models\User;
 use Models\UserUc;
 use Libraries\Response;
 use Libraries\Request;
+use Libraries\MessageBroker;
+use Exception;
 
 class UserucController
 {
@@ -41,12 +43,19 @@ class UserucController
         if (empty($post['user']) || empty($post['uc'])) {
             Response::sendResponse(422, ["msg" => "Parameters not found"]);
         }
-        $response = $this->save($post);
-        if ($response) {
-            Response::sendResponse(200, ["msg" => "Inserted Success"]);
-        } else {
-            Response::sendResponse(422, ["msg" => "Error on insert record"]);
-        }
+        $userUcInfo = $this->save($post);
+        //As there won't be an actual payment, 
+        //let's leave the possibility to refuse payment and thereby test the SAGA pattern.
+        $simulate_fail = isset($post['fail']) ? $post['fail'] : 0;
+        MessageBroker::sendMessage(
+            "createPayment",
+            [
+                "simulate_fail" => $simulate_fail,
+                "iduser" => $userUcInfo->iduser,
+                "iduc" => $userUcInfo->iduc
+            ]
+        );
+        Response::sendResponse(200, ["msg" => "Inserted Success"]);
     }
 
 
@@ -54,26 +63,35 @@ class UserucController
      * save
      *
      * @param  array $post
-     * @return boolean
+     * @return UserUc
      */
     private function save(array $post)
     {
-        $uuc_class = new UserUc();
-        $user = User::find("*", ["email" => $post['user']]);
-        $uc = Uc::find("*", ["code" => $post['uc']]);
-        if (!$user || !$uc) {
-            return false;
-        }
-        $uuc_class->iduc = $uc[0]->iduc;
-        $uuc_class->iduser = $user[0]->iduser;
-        if ($useruc_old = UserUc::find("uuc.*", ["uuc.iduc" => $uc[0]->iduc, "uuc.iduser" => $user[0]->iduser])) {
-            if ($useruc_old[0]->status != 0) {
-                Response::sendResponse(205, ["msg" => "User Already Register in Uc"]);
+        try {
+            $uuc_class = new UserUc();
+            $user = User::find("*", ["email" => $post['user']]);
+            $uc = Uc::find("*", ["code" => $post['uc']]);
+            if (!$user || !$uc) {
+                throw new Exception("Params receive not found", 422);
             }
-            $uuc_class->status = 2;
-            return $uuc_class->updateStatus();
+            $uuc_class->iduc = $uc[0]->iduc;
+            $uuc_class->iduser = $user[0]->iduser;
+            if ($useruc_old = UserUc::find("uuc.*", ["uuc.iduc" => $uc[0]->iduc, "uuc.iduser" => $user[0]->iduser])) {
+                if ($useruc_old[0]->status != 0) {
+                    throw new Exception("User Already Register in Uc", 205);
+                }
+                $uuc_class->status = 2;
+                if (!$uuc_class->updateStatus()) {
+                    throw new Exception("Error on insert record", 422);
+                }
+            }
+            if (!$uuc_class->insert()) {
+                throw new Exception("Error on insert record", 422);
+            }
+        } catch (Exception $e) {
+            Response::sendResponse($e->getCode(), ["msg" => $e->getMessage()]);
         }
-        return $uuc_class->insert();
+        return $uuc_class;
     }
 
 
@@ -98,20 +116,6 @@ class UserucController
     }
 
 
-    /**
-     * update
-     *
-     * @param  array $params
-     * @return void
-     */
-    public function update(array $params = [])
-    {
-        $post = Request::getPostParams();
-        if (empty($post['status'])) {
-            Response::sendResponse(422, ["msg" => "Parameters not found"]);
-        }
-        $this->changeStatus($params, $post['status']);
-    }
 
     /**
      * delete
