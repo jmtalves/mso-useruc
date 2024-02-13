@@ -32,7 +32,7 @@ class UserucController
     }
 
     /**
-     * insert
+     * insert data
      *
      * @return void
      */
