@@ -1,0 +1,15 @@
+2024-02-13 10:36:45,393 INFO Set uid to user 0 succeeded
+2024-02-13 10:36:45,409 INFO RPC interface 'supervisor' initialized
+2024-02-13 10:37:16,326 INFO Set uid to user 0 succeeded
+2024-02-13 10:37:16,640 INFO RPC interface 'supervisor' initialized
+2024-02-13 10:37:16,644 INFO daemonizing the supervisord process
+2024-02-13 10:42:43,592 INFO Set uid to user 0 succeeded
+2024-02-13 10:42:43,614 INFO RPC interface 'supervisor' initialized
+2024-02-13 10:42:43,614 CRIT Server 'inet_http_server' running without any HTTP authentication checking
+2024-02-13 10:42:43,616 INFO RPC interface 'supervisor' initialized
+2024-02-13 10:42:43,616 CRIT Server 'unix_http_server' running without any HTTP authentication checking
+2024-02-13 10:42:51,911 INFO Set uid to user 0 succeeded
+2024-02-13 10:42:51,919 INFO RPC interface 'supervisor' initialized
+2024-02-13 10:42:51,919 CRIT Server 'inet_http_server' running without any HTTP authentication checking
+2024-02-13 10:42:52,222 INFO RPC interface 'supervisor' initialized
+2024-02-13 10:42:52,222 CRIT Server 'unix_http_server' running without any HTTP authentication checking

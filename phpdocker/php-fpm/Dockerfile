@@ -26,6 +26,7 @@ COPY ./ /var/www/html
 
 COPY supervisord/* /etc/supervisor/
 
-CMD ["supervisord", "-c", "/etc/supervisor/supervisord.conf"]
+EXPOSE 9000
 
+CMD ["supervisord", "-c", "/etc/supervisor/supervisord.conf", "-n", "-e", "debug"]
 

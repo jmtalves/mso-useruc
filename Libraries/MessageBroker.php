@@ -44,21 +44,7 @@ class MessageBroker
         $mbroker_pass = getenv('PASS_MESSAGEBROKER');
         $connection = new AMQPStreamConnection($mbroker_ip, 5672, $mbroker_user, $mbroker_pass, '/');
         $channel = $connection->channel();
-        $channel->exchange_declare(
-            $event,
-            'direct',
-            false,
-            true,
-            false
-        );
         $queueName = $event . 'Queue';
-        $channel->queue_declare(
-            $queueName,
-            false,
-            true,
-            false,
-            false
-        );
         $channel->queue_bind($queueName, $event);
         $callback = function (AMQPMessage $message) use ($name_func) {
             $body = json_decode($message->getBody(), true);
