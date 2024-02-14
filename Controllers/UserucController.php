@@ -52,7 +52,9 @@ class UserucController
             [
                 "simulate_fail" => $simulate_fail,
                 "iduser" => $userUcInfo->iduser,
-                "iduc" => $userUcInfo->iduc
+                "iduc" => $userUcInfo->iduc,
+                "user" => $post['user'],
+                "uc" => $post['uc']
             ]
         );
         Response::sendResponse(200, ["msg" => "Inserted Success"]);
@@ -115,7 +117,20 @@ class UserucController
         return $us;
     }
 
-
+    /**
+     * update
+     *
+     * @param  array $params
+     * @return void
+     */
+    public function update(array $params = [])
+    {
+        $post = Request::getPostParams();
+        if (empty($post['status'])) {
+            Response::sendResponse(422, ["msg" => "Parameters not found"]);
+        }
+        $this->changeStatus($params, $post['status']);
+    }
 
     /**
      * delete
