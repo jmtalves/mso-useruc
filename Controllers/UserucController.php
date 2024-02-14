@@ -125,7 +125,10 @@ class UserucController
      */
     public function update(array $params = [])
     {
-        Request::verifyToken([0, 1]);
+        $key = Request::verifyToken([0, 1]);
+        if ($key['type'] == 1 && $key['api_key'] != "internal") {
+            Response::sendResponse(422, ["msg" => "Parameters not found"]);
+        }
         $post = Request::getPostParams();
         if (empty($post['status'])) {
             Response::sendResponse(422, ["msg" => "Parameters not found"]);
@@ -141,6 +144,10 @@ class UserucController
      */
     public function delete(array $params = [])
     {
+        $key = Request::verifyToken([0, 1]);
+        if ($key['type'] == 1 && $key['api_key'] != "internal") {
+            Response::sendResponse(422, ["msg" => "Parameters not found"]);
+        }
         $this->changeStatus($params, 0);
     }
 
@@ -153,7 +160,6 @@ class UserucController
      */
     private function changeStatus(array $params = [], int $status = 2)
     {
-        Request::verifyToken([0]);
         $us = $this->checkInfo($params);
         if (!$us) {
             Response::sendResponse(404, ["msg" => "Data Not Found"]);
