@@ -125,6 +125,7 @@ class UserucController
      */
     public function update(array $params = [])
     {
+        Request::verifyToken([0, 1]);
         $post = Request::getPostParams();
         if (empty($post['status'])) {
             Response::sendResponse(422, ["msg" => "Parameters not found"]);
